@@ -18,7 +18,7 @@ func _physics_process(delta):
 	direction = direction.normalized() * speed
 	velocity.y += gravity * delta
 	velocity.x = direction.x
-	velocity.z = direction.z	
+	velocity.z = direction.z
 	velocity = move_and_slide(velocity, Vector3(0,1,0))
 	
 	if is_on_floor() and Input.is_action_just_pressed("ui_select"):
