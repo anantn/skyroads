@@ -36,8 +36,9 @@ func (l Level) String() string {
 	for i := len(l.Road) - 1; i >= 0; i-- {
 		r := l.Road[i]
 		for _, c := range r {
+			clr := l.Palette[c.Bottom]
 			fmt.Fprintf(&s, "%s%dm %-5s %s",
-				fg, 16+36*(c.Bottom.R)+6*(c.Bottom.G)+(c.Bottom.B), c, reset)
+				fg, 16+36*(clr.R)+6*(clr.G)+(clr.B), c, reset)
 		}
 		fmt.Fprintf(&s, "\n")
 	}
@@ -57,8 +58,7 @@ func (l Level) GDScript() string {
 		if i%6 == 0 {
 			fmt.Fprintf(&s, "\n\t\t")
 		}
-		fmt.Fprintf(&s, "Color(%.2f,%.2f,%.2f), ",
-			float32(p.R)/255, float32(p.G)/255, float32(p.B)/255)
+		fmt.Fprintf(&s, "Color8(%3d,%3d,%3d), ", p.R, p.G, p.B)
 	}
 
 	fmt.Fprintf(&s, "\n\t],\n")
@@ -67,7 +67,8 @@ func (l Level) GDScript() string {
 	for i := 0; i < 7; i++ {
 		fmt.Fprintf(&s, "\t\t[")
 		for j := 0; j < l.Length; j++ {
-			fmt.Fprintf(&s, "\"%-4s\", ", l.Road[j][i])
+			fmt.Fprintf(&s, "[\"%-4s\", %2d, %2d], ",
+				l.Road[j][i], l.Road[j][i].Bottom, l.Road[j][i].Top)
 		}
 		fmt.Fprintf(&s, "],\n")
 	}
@@ -82,8 +83,8 @@ type Row [7]Cell
 
 // Cell represent a single tile in the level.
 type Cell struct {
-	Bottom    color.RGBA
-	Top       color.RGBA
+	Bottom    uint16
+	Top       uint16
 	IsTunnel  bool
 	IsHalfTop bool
 	IsFullTop bool
@@ -91,7 +92,7 @@ type Cell struct {
 
 func (c Cell) String() string {
 	cs := ""
-	if c.Bottom.R != 0 || c.Bottom.G != 0 || c.Bottom.B != 0 {
+	if c.Bottom != 0 {
 		cs += "x"
 		if c.IsTunnel {
 			cs += "t"
@@ -130,8 +131,8 @@ func Parse(input *Reader, size int) (Level, error) {
 		for j := 0; j < 7; j++ {
 			var cell Cell
 			v, _ := rdr.GetNum()
-			cell.Bottom = l.Palette[v&0x0F]
-			cell.Top = l.Palette[(v>>4)&0x0F]
+			cell.Bottom = v & 0x0F
+			cell.Top = (v >> 4) & 0x0F
 			cell.IsTunnel = (v>>8)&1 == 1
 			cell.IsHalfTop = (v>>9)&1 == 1
 			cell.IsFullTop = (v>>10)&1 == 1
