@@ -3,7 +3,6 @@ package levels
 import (
 	"bytes"
 	"encoding/binary"
-	"fmt"
 	"io"
 	"io/ioutil"
 
@@ -103,18 +102,14 @@ func Read(input io.Reader) ([]Level, error) {
 		offsets = append(offsets, [2]uint16{start, size})
 	}
 
-	fmt.Printf("Found %d levels, now at offset %d\n\n", len(offsets), idx)
 	levels := make([]Level, len(offsets))
 	for i, o := range offsets {
-		fmt.Printf("Seeking to %d for next level\n", o[0])
 		rdr.Seek(int64(o[0]), 0)
-
 		l, err := Parse(r, int(o[1]))
-		fmt.Printf("Level %d:\n%s\n\n", i, l)
 		if err != nil {
 			return nil, err
 		}
-		levels = append(levels, l)
+		levels[i] = l
 	}
 
 	return levels, nil

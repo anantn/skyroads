@@ -23,7 +23,7 @@ const (
 	bg    = "\033[48;5;"
 )
 
-// String prints a friendly representation of the level.
+// String prints a terminal friendly representation of the level.
 func (l Level) String() string {
 	var s strings.Builder
 	fmt.Fprintf(&s, "Gravity: %d, Fuel: %d, Oxygen: %d, Length: %d\n",
@@ -36,24 +36,44 @@ func (l Level) String() string {
 	for i := len(l.Road) - 1; i >= 0; i-- {
 		r := l.Road[i]
 		for _, c := range r {
-			cs := ""
-			if c.Bottom.R != 0 || c.Bottom.G != 0 || c.Bottom.B != 0 {
-				cs += "x"
-				if c.IsTunnel {
-					cs += "t"
-				}
-				if c.IsHalfTop {
-					cs += "h"
-				}
-				if c.IsFullTop {
-					cs += "f"
-				}
-			}
 			fmt.Fprintf(&s, "%s%dm %-5s %s",
-				fg, 16+36*(c.Bottom.R)+6*(c.Bottom.G)+(c.Bottom.B), cs, reset)
+				fg, 16+36*(c.Bottom.R)+6*(c.Bottom.G)+(c.Bottom.B), c, reset)
 		}
 		fmt.Fprintf(&s, "\n")
 	}
+	return s.String()
+}
+
+// GDScript prints a string that can be imported into a GoDot script.
+func (l Level) GDScript() string {
+	var s strings.Builder
+	fmt.Fprintf(&s, "var level = {\n")
+	fmt.Fprintf(&s, "\tgravity = %d,\n", l.Gravity)
+	fmt.Fprintf(&s, "\tfuel = %d,\n", l.Fuel)
+	fmt.Fprintf(&s, "\toxygen = %d,\n", l.Oxygen)
+	fmt.Fprintf(&s, "\tpalette = [")
+
+	for i, p := range l.Palette {
+		if i%6 == 0 {
+			fmt.Fprintf(&s, "\n\t\t")
+		}
+		fmt.Fprintf(&s, "Color(%.2f,%.2f,%.2f), ",
+			float32(p.R)/255, float32(p.G)/255, float32(p.B)/255)
+	}
+
+	fmt.Fprintf(&s, "\n\t],\n")
+	fmt.Fprintf(&s, "\troad = [\n")
+
+	for i := 0; i < 7; i++ {
+		fmt.Fprintf(&s, "\t\t[")
+		for j := 0; j < l.Length; j++ {
+			fmt.Fprintf(&s, "\"%-4s\", ", l.Road[j][i])
+		}
+		fmt.Fprintf(&s, "],\n")
+	}
+
+	fmt.Fprintf(&s, "\t]\n")
+	fmt.Fprintf(&s, "}\n")
 	return s.String()
 }
 
@@ -67,6 +87,23 @@ type Cell struct {
 	IsTunnel  bool
 	IsHalfTop bool
 	IsFullTop bool
+}
+
+func (c Cell) String() string {
+	cs := ""
+	if c.Bottom.R != 0 || c.Bottom.G != 0 || c.Bottom.B != 0 {
+		cs += "x"
+		if c.IsTunnel {
+			cs += "t"
+		}
+		if c.IsHalfTop {
+			cs += "h"
+		}
+		if c.IsFullTop {
+			cs += "f"
+		}
+	}
+	return cs
 }
 
 // Parse reads a single level from the input reader.
