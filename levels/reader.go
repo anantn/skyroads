@@ -110,7 +110,7 @@ func Read(input io.Reader) ([]Level, error) {
 		rdr.Seek(int64(o[0]), 0)
 
 		l, err := Parse(r, int(o[1]))
-		fmt.Printf("Level %d: %d, %d, %d\n\n", i, l.Gravity, l.Oxygen, l.Fuel)
+		fmt.Printf("Level %d:\n%s\n\n", i, l)
 		if err != nil {
 			return nil, err
 		}
