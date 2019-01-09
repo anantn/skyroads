@@ -41,9 +41,9 @@ func _ready():
 		for col in row:
 			if "x" in col[0]:
 				var tile = x.instance()
-				if "h" in col:
+				if "h" in col[0]:
 					tile = h.instance()
-				if "f" in col:
+				if "f" in col[0]:
 					tile = f.instance()
 				tile.global_translate(Vector3(r, -0.5, c))
 				add_child(tile)
