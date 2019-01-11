@@ -40,10 +40,19 @@ func _ready():
 		for col in row:
 			if "x" in col[0]:
 				var tile = x.instance()
+				var color = level["palette"][col[1]]
 				if "h" in col[0]:
 					tile = h.instance()
+					if col[2] == 0:
+						color = level["palette"][62]
 				if "f" in col[0]:
 					tile = f.instance()
+					if col[2] == 0:
+						color = level["palette"][62]
+				var mesh = tile.get_child(0)
+				var mat = mesh.get_surface_material(0).duplicate()
+				mat.albedo_color = color
+				mesh.set_surface_material(0, mat)
 				tile.global_translate(Vector3(r, 0, c))
 				add_child(tile)
 			c = c - 6
