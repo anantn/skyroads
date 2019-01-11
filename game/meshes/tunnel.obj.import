@@ -1,0 +1,17 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/tunnel.obj-93f50fb94bc9a95efb015e70728f74e1.mesh"
+
+[deps]
+
+files=[ "res://.import/tunnel.obj-93f50fb94bc9a95efb015e70728f74e1.mesh" ]
+
+source_file="res://meshes/tunnel.obj"
+dest_files=[ "res://.import/tunnel.obj-93f50fb94bc9a95efb015e70728f74e1.mesh", "res://.import/tunnel.obj-93f50fb94bc9a95efb015e70728f74e1.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )

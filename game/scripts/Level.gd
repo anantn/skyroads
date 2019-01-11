@@ -91,6 +91,7 @@ func get_top(palette, color, type):
 		tile = f.instance()
 	var mesh = tile.get_child(0)
 	var j = 61
+	# 0-right, 1-front, 2-left, 3-back, 4-top, 6-bottom
 	for i in [4, 1, 0, 2]:
 		var setcolor = palette[j]
 		if color != 0 and i == 4:
@@ -102,6 +103,9 @@ func get_top(palette, color, type):
 		j += 1
 	tops[idx] = tile
 	return tile
+
+# Tunnel: right, top-right, top, top-left, left
+# 0-outside, 1-inside, 2-front
 
 func _ready():
 	var r = -5
