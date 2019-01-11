@@ -1,8 +1,16 @@
 extends KinematicBody
 
-var speed = 10
+var speed = 0
 var gravity = -20
 var velocity = Vector3()
+
+func is_near_floor():
+	if is_on_floor():
+		return true
+	var y = get_global_transform().origin.y
+	if y < 2 and y > 0:
+		return true
+	return false
 
 func _physics_process(delta):
 	var direction = Vector3()
@@ -11,18 +19,21 @@ func _physics_process(delta):
 	if Input.is_action_pressed("ui_right"):
 		direction.x += 1
 	if Input.is_action_pressed("ui_up"):
-		direction.z -= 1
+		if speed < 100:
+			speed += 1
+			$"../Control/ProgressBar".value = speed
 	if Input.is_action_pressed("ui_down"):
-		direction.z += 1
+		if speed > 0:
+			speed -= 1
+			$"../Control/ProgressBar".value = speed
 
-	direction = direction.normalized() * speed
+	velocity.x = direction.normalized().x * 5
 	velocity.y += gravity * delta
-	velocity.x = direction.x
-	velocity.z = direction.z
+	velocity.z = -(speed * 10 * delta)
 	velocity = move_and_slide(velocity, Vector3(0,1,0))
 	
-	if is_on_floor() and Input.is_action_just_pressed("ui_select"):
-		velocity.y = 10
+	if is_on_floor() and Input.is_action_pressed("ui_select"):
+		velocity.y = 7
 
 func _process(delta):
 	var pos = get_global_transform().origin
