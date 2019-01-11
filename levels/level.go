@@ -58,7 +58,7 @@ func (l Level) GDScript() string {
 		if i%6 == 0 {
 			fmt.Fprintf(&s, "\n\t\t")
 		}
-		fmt.Fprintf(&s, "Color8(%3d,%3d,%3d), ", p.R, p.G, p.B)
+		fmt.Fprintf(&s, " Color8(%3d,%3d,%3d),", p.R, p.G, p.B)
 	}
 
 	fmt.Fprintf(&s, "\n\t],\n")

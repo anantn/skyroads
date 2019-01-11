@@ -2,6 +2,8 @@ extends KinematicBody
 
 var speed = 0
 var gravity = -20
+var multiplier = 10
+var jump = 7
 var velocity = Vector3()
 
 func is_near_floor():
@@ -29,11 +31,11 @@ func _physics_process(delta):
 
 	velocity.x = direction.normalized().x * 5
 	velocity.y += gravity * delta
-	velocity.z = -(speed * 10 * delta)
+	velocity.z = -(speed * multiplier * delta)
 	velocity = move_and_slide(velocity, Vector3(0,1,0))
 	
 	if is_on_floor() and Input.is_action_pressed("ui_select"):
-		velocity.y = 7
+		velocity.y = jump
 
 func _process(delta):
 	var pos = get_global_transform().origin
