@@ -77,20 +77,21 @@ func _ready():
 	for row in level["road"]:
 		var c = 0
 		for col in row:
+			var tile
+			var color = level["palette"][col[1]]
 			if "x" in col[0]:
-				var tile = x.instance()
-				var color = level["palette"][col[1]]
+				tile = x.instance()
 				add_tile(tile, color, r, c)
-				if "h" in col[0]:
-					tile = h.instance()
-					if col[2] == 0:
-						color = level["palette"][62]
-					add_tile(tile, color, r, c)
-				if "f" in col[0]:
-					tile = f.instance()
-					if col[2] == 0:
-						color = level["palette"][62]
-					add_tile(tile, color, r, c)
+			if "h" in col[0]:
+				tile = h.instance()
+				if col[2] == 0:
+					color = level["palette"][62]
+				add_tile(tile, color, r, c)
+			if "f" in col[0]:
+				tile = f.instance()
+				if col[2] == 0:
+					color = level["palette"][62]
+				add_tile(tile, color, r, c)
 			c = c - 6
 		r = r + 2
 	pass
