@@ -62,14 +62,46 @@ var level2 = {
 	]
 }
 
-
-func add_tile(tile, color, r, c):
+var floors = {}
+func get_floor(palette, color):
+	if color in floors:
+		return floors[color].duplicate()
+	var tile = x.instance()
 	var mesh = tile.get_child(0)
-	var mat = mesh.get_surface_material(0).duplicate()
-	mat.albedo_color = color
-	mesh.set_surface_material(0, mat)
-	tile.global_translate(Vector3(r, 0, c))
-	add_child(tile)
+	var j = 0
+	# 0-right, 1-front, 2-left, 3-back, 4-top, 6-bottom
+	for i in [4, 1, 0, 2]:
+		var mat = SpatialMaterial.new()
+		mat.albedo_color = palette[color + j]
+		mat.flags_unshaded = true
+		mesh.set_surface_material(i, mat)
+		j += 15
+	floors[color] = tile
+	return tile
+
+var tops = {}
+func get_top(palette, color, type):
+	var idx = type+str(color)
+	if idx in tops:
+		return tops[idx].duplicate()
+	var tile
+	if type == "h":
+		tile = h.instance()
+	if type == "f":
+		tile = f.instance()
+	var mesh = tile.get_child(0)
+	var j = 61
+	for i in [4, 1, 0, 2]:
+		var setcolor = palette[j]
+		if color != 0 and i == 4:
+			setcolor = color
+		var mat = SpatialMaterial.new()
+		mat.albedo_color = setcolor
+		mat.flags_unshaded = true
+		mesh.set_surface_material(i, mat)
+		j += 1
+	tops[idx] = tile
+	return tile
 
 func _ready():
 	var r = -5
@@ -77,21 +109,19 @@ func _ready():
 	for row in level["road"]:
 		var c = 0
 		for col in row:
-			var tile
-			var color = level["palette"][col[1]]
+			var tile = null
 			if "x" in col[0]:
-				tile = x.instance()
-				add_tile(tile, color, r, c)
+				tile = get_floor(level["palette"], col[1])
+				tile.global_translate(Vector3(r, 0, c))
+				add_child(tile)
+				tile = null
 			if "h" in col[0]:
-				tile = h.instance()
-				if col[2] == 0:
-					color = level["palette"][62]
-				add_tile(tile, color, r, c)
+				tile = get_top(level["palette"], col[2], "h")
 			if "f" in col[0]:
-				tile = f.instance()
-				if col[2] == 0:
-					color = level["palette"][62]
-				add_tile(tile, color, r, c)
+				tile = get_top(level["palette"], col[2], "f")
+			if tile:
+				tile.global_translate(Vector3(r, 0, c))
+				add_child(tile)
 			c = c - 6
 		r = r + 2
 	pass
