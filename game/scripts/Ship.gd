@@ -3,7 +3,7 @@ extends KinematicBody
 var speed = 0
 var gravity = -20
 var multiplier = 10
-var jump = 7
+var jump = 8
 var velocity = Vector3()
 
 func is_near_floor():

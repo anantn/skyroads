@@ -3,6 +3,7 @@ extends Spatial
 var x = load("res://scenes/Floor.tscn")
 var h = load("res://scenes/Half.tscn")
 var f = load("res://scenes/Full.tscn")
+var t = load("res://scenes/Tunnel.tscn")
 
 var level1 = {
 	gravity = 8,
@@ -104,8 +105,59 @@ func get_top(palette, color, type):
 	tops[idx] = tile
 	return tile
 
-# Tunnel: right, top-right, top, top-left, left
-# 0-outside, 1-inside, 2-front
+var tunnel = null
+func get_tunnel(palette):
+	if tunnel:
+		return tunnel.duplicate()
+	
+	var front = SpatialMaterial.new()
+	front.albedo_color = palette[66]
+	front.flags_unshaded = true
+	var inside = SpatialMaterial.new()
+	inside.albedo_color = palette[67]
+	inside.flags_unshaded = true
+	
+	var tile = t.instance()
+	var mesh = tile.get_child(0)
+	# Tunnel order:
+	# 0: right-edge (71), 1: right-side (70), 2: top-right (68)
+	# 3: top-left (69), 4: left-side (70), 5: left-edge (71)
+	# 0-outside, 1-inside, 2-front
+	
+	var i = 2
+	var outside = SpatialMaterial.new()
+	outside.albedo_color = palette[68]
+	outside.flags_unshaded = true
+	mesh.set_surface_material(i*3+0, outside)
+	mesh.set_surface_material(i*3+1, inside)
+	mesh.set_surface_material(i*3+2, front)
+
+	i = 3
+	outside = SpatialMaterial.new()
+	outside.albedo_color = palette[69]
+	outside.flags_unshaded = true
+	mesh.set_surface_material(i*3+0, outside)
+	mesh.set_surface_material(i*3+1, inside)
+	mesh.set_surface_material(i*3+2, front)
+
+	for i in [1, 4]:
+		outside = SpatialMaterial.new()
+		outside.albedo_color = palette[70]
+		outside.flags_unshaded = true
+		mesh.set_surface_material(i*3+0, outside)
+		mesh.set_surface_material(i*3+1, inside)
+		mesh.set_surface_material(i*3+2, front)
+
+	for i in [0, 5]:
+		outside = SpatialMaterial.new()
+		outside.albedo_color = palette[71]
+		outside.flags_unshaded = true
+		mesh.set_surface_material(i*3+0, outside)
+		mesh.set_surface_material(i*3+1, inside)
+		mesh.set_surface_material(i*3+2, front)
+
+	tunnel = tile
+	return tile
 
 func _ready():
 	var r = -5
@@ -119,6 +171,11 @@ func _ready():
 				tile.global_translate(Vector3(r, 0, c))
 				add_child(tile)
 				tile = null
+			if "t" in col[0]:
+				tile = get_tunnel(level["palette"])
+				tile.global_translate(Vector3(r, 0, c))
+				add_child(tile)
+				continue
 			if "h" in col[0]:
 				tile = get_top(level["palette"], col[2], "h")
 			if "f" in col[0]:
