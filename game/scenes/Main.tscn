@@ -7,11 +7,11 @@
 
 [node name="Ship" parent="." index="0" instance=ExtResource( 1 )]
 
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 1, 0, -3 )
+transform = Transform( 0.5, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 1, 1, -15 )
 
 [node name="Camera" type="Camera" parent="Ship" index="2"]
 
-transform = Transform( 1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 5, 10 )
+transform = Transform( 1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 7.5, 20 )
 keep_aspect = 1
 cull_mask = 1048575
 environment = null

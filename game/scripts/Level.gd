@@ -35,9 +35,8 @@ var level = {
 
 func _ready():
 	var r = -5
-	var c = 2
 	for row in level["road"]:
-		c = 0
+		var c = 0
 		for col in row:
 			if "x" in col[0]:
 				var tile = x.instance()
@@ -45,8 +44,8 @@ func _ready():
 					tile = h.instance()
 				if "f" in col[0]:
 					tile = f.instance()
-				tile.global_translate(Vector3(r, -0.5, c))
+				tile.global_translate(Vector3(r, 0, c))
 				add_child(tile)
-			c = c - 2
+			c = c - 6
 		r = r + 2
 	pass
