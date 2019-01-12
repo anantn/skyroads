@@ -63,6 +63,18 @@ var level2 = {
 	]
 }
 
+var materials = {}
+func set_color(color, mesh, index):
+	var mat
+	if color in materials:
+		mat = materials[color]
+	else:
+		mat = SpatialMaterial.new()
+		mat.albedo_color = color
+		mat.flags_unshaded = true
+		materials[color] = mat
+	mesh.set_surface_material(index, mat)
+
 var floors = {}
 func get_floor(palette, color):
 	if color in floors:
@@ -72,10 +84,7 @@ func get_floor(palette, color):
 	var j = 0
 	# 0-right, 1-front, 2-left, 3-back, 4-top, 6-bottom
 	for i in [4, 1, 0, 2]:
-		var mat = SpatialMaterial.new()
-		mat.albedo_color = palette[color + j]
-		mat.flags_unshaded = true
-		mesh.set_surface_material(i, mat)
+		set_color(palette[color+j], mesh, i)
 		j += 15
 	floors[color] = tile
 	return tile
@@ -97,10 +106,7 @@ func get_top(palette, color, type):
 		var setcolor = palette[j]
 		if color != 0 and i == 4:
 			setcolor = color
-		var mat = SpatialMaterial.new()
-		mat.albedo_color = setcolor
-		mat.flags_unshaded = true
-		mesh.set_surface_material(i, mat)
+		set_color(setcolor, mesh, i)
 		j += 1
 	tops[idx] = tile
 	return tile
@@ -109,52 +115,32 @@ var tunnel = null
 func get_tunnel(palette):
 	if tunnel:
 		return tunnel.duplicate()
-	
-	var front = SpatialMaterial.new()
-	front.albedo_color = palette[66]
-	front.flags_unshaded = true
-	var inside = SpatialMaterial.new()
-	inside.albedo_color = palette[67]
-	inside.flags_unshaded = true
-	
+
 	var tile = t.instance()
 	var mesh = tile.get_child(0)
+	var front = palette[66]
+	var inside = palette[67]
+
 	# Tunnel order:
 	# 0: right-edge (71), 1: right-side (70), 2: top-right (68)
 	# 3: top-left (69), 4: left-side (70), 5: left-edge (71)
 	# 0-outside, 1-inside, 2-front
-	
 	var i = 2
-	var outside = SpatialMaterial.new()
-	outside.albedo_color = palette[68]
-	outside.flags_unshaded = true
-	mesh.set_surface_material(i*3+0, outside)
-	mesh.set_surface_material(i*3+1, inside)
-	mesh.set_surface_material(i*3+2, front)
-
+	set_color(palette[68], mesh, i*3+0)
+	set_color(inside, mesh, i*3+1)
+	set_color(front, mesh, i*3+2)
 	i = 3
-	outside = SpatialMaterial.new()
-	outside.albedo_color = palette[69]
-	outside.flags_unshaded = true
-	mesh.set_surface_material(i*3+0, outside)
-	mesh.set_surface_material(i*3+1, inside)
-	mesh.set_surface_material(i*3+2, front)
-
+	set_color(palette[69], mesh, i*3+0)
+	set_color(inside, mesh, i*3+1)
+	set_color(front, mesh, i*3+2)
 	for i in [1, 4]:
-		outside = SpatialMaterial.new()
-		outside.albedo_color = palette[70]
-		outside.flags_unshaded = true
-		mesh.set_surface_material(i*3+0, outside)
-		mesh.set_surface_material(i*3+1, inside)
-		mesh.set_surface_material(i*3+2, front)
-
+		set_color(palette[70], mesh, i*3+0)
+		set_color(inside, mesh, i*3+1)
+		set_color(front, mesh, i*3+2)
 	for i in [0, 5]:
-		outside = SpatialMaterial.new()
-		outside.albedo_color = palette[71]
-		outside.flags_unshaded = true
-		mesh.set_surface_material(i*3+0, outside)
-		mesh.set_surface_material(i*3+1, inside)
-		mesh.set_surface_material(i*3+2, front)
+		set_color(palette[71], mesh, i*3+0)
+		set_color(inside, mesh, i*3+1)
+		set_color(front, mesh, i*3+2)
 
 	tunnel = tile
 	return tile
@@ -175,6 +161,7 @@ func _ready():
 				tile = get_tunnel(level["palette"])
 				tile.global_translate(Vector3(r, 0, c))
 				add_child(tile)
+				c = c - 6
 				continue
 			if "h" in col[0]:
 				tile = get_top(level["palette"], col[2], "h")
