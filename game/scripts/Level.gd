@@ -4,6 +4,7 @@ var x = load("res://scenes/Floor.tscn")
 var h = load("res://scenes/Half.tscn")
 var f = load("res://scenes/Full.tscn")
 var t = load("res://scenes/Tunnel.tscn")
+var ht = load("res://scenes/TopTunnel.tscn")
 
 var level1 = {
 	gravity = 8,
@@ -145,31 +146,62 @@ func get_tunnel(palette):
 	tunnel = tile
 	return tile
 
+var half_tunnel = null
+func get_half_tunnel(palette, color):
+	if half_tunnel:
+		return half_tunnel.duplicate()
+	var tile = ht.instance()
+	var mesh = tile.get_child(0)
+	var front = palette[66]
+	var inside = palette[67]
+	# 0: top, 1: front, 2: left, 3: right, 4: back, 5: inside
+	var top_color = palette[61]
+	if color != 0:
+		top_color = palette[color]
+	set_color(top_color, mesh, 0)
+	set_color(palette[62], mesh, 1)
+	set_color(palette[63], mesh, 3)
+	set_color(palette[64], mesh, 2)
+	set_color(palette[65], mesh, 5)
+	half_tunnel = tile
+	return tile
+
 func _ready():
+	print(ht)
 	var r = -5
 	var level = level2
 	for row in level["road"]:
 		var c = 0
 		for col in row:
-			var tile = null
 			if "x" in col[0]:
-				tile = get_floor(level["palette"], col[1])
+				var tile = get_floor(level["palette"], col[1])
 				tile.global_translate(Vector3(r, 0, c))
 				add_child(tile)
-				tile = null
 			if "t" in col[0]:
-				tile = get_tunnel(level["palette"])
-				tile.global_translate(Vector3(r, 0, c))
-				add_child(tile)
-				c = c - 6
-				continue
-			if "h" in col[0]:
-				tile = get_top(level["palette"], col[2], "h")
-			if "f" in col[0]:
-				tile = get_top(level["palette"], col[2], "f")
-			if tile:
-				tile.global_translate(Vector3(r, 0, c))
-				add_child(tile)
+				if "f" in col[0]:
+					var tile = get_half_tunnel(level["palette"], col[2])
+					tile.global_translate(Vector3(r, 0, c))
+					add_child(tile)
+					var topfill = get_top(level["palette"], col[2], "h")
+					topfill.global_translate(Vector3(r, 1, c))
+					add_child(topfill)
+				elif "h" in col[0]:
+					var tile = get_half_tunnel(level["palette"], col[2])
+					tile.global_translate(Vector3(r, 0, c))
+					add_child(tile)
+				else:
+					var tile = get_tunnel(level["palette"])
+					tile.global_translate(Vector3(r, 0, c))
+					add_child(tile)
+			else:
+				var tile
+				if "h" in col[0]:
+					tile = get_top(level["palette"], col[2], "h")
+				if "f" in col[0]:
+					tile = get_top(level["palette"], col[2], "f")
+				if tile:
+					tile.global_translate(Vector3(r, 0, c))
+					add_child(tile)
 			c = c - 6
 		r = r + 2
 	pass
