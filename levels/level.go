@@ -94,15 +94,15 @@ func (c Cell) String() string {
 	cs := ""
 	if c.Bottom != 0 {
 		cs += "x"
-		if c.IsTunnel {
-			cs += "t"
-		}
-		if c.IsHalfTop {
-			cs += "h"
-		}
-		if c.IsFullTop {
-			cs += "f"
-		}
+	}
+	if c.IsTunnel {
+		cs += "t"
+	}
+	if c.IsHalfTop {
+		cs += "h"
+	}
+	if c.IsFullTop {
+		cs += "f"
 	}
 	return cs
 }
