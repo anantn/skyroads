@@ -167,7 +167,7 @@ func get_top(palette, color, type):
 	for i in [4, 1, 0, 2]:
 		var setcolor = palette[j]
 		if color != 0 and i == 4:
-			setcolor = color
+			setcolor = palette[color]
 		set_color(setcolor, mesh, i)
 		j += 1
 	tops[idx] = tile
