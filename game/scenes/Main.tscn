@@ -139,7 +139,7 @@ transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 1, 1, -15 )
 
 [node name="Camera" type="Camera" parent="Ship" index="2"]
 
-transform = Transform( 1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 7.5, 20 )
+transform = Transform( 1, 0, 0, 0, 0.819152, 0.573577, 0, -0.573577, 0.819152, 0, 7.5, 15 )
 keep_aspect = 1
 cull_mask = 1048575
 environment = null
@@ -151,7 +151,7 @@ current = false
 fov = 70.0
 size = 1.0
 near = 0.05
-far = 100.0
+far = 45.0
 _sections_unfolded = [ "Transform" ]
 
 [node name="Spatial" parent="." index="2" instance=ExtResource( 2 )]
