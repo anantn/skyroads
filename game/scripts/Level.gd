@@ -124,31 +124,44 @@ var level21 = {
 }
 
 
-
 var materials = {}
-func set_color(color, mesh, index):
+var unshaded_materials = {}
+func set_color(color, mesh, index, unshaded):
 	var mat
-	if color in materials:
-		mat = materials[color]
+	var lookup = materials
+	if unshaded:
+		lookup = unshaded_materials
+	if color in lookup:
+		mat = lookup[color]
 	else:
 		mat = SpatialMaterial.new()
 		mat.albedo_color = color
-		mat.flags_unshaded = true
-		materials[color] = mat
+		if unshaded:
+			mat.flags_unshaded = true
+		else:
+			mat.roughness = 0.8
+		lookup[color] = mat
 	mesh.set_surface_material(index, mat)
 
 var floors = {}
-func get_floor(palette, color):
-	if color in floors:
-		return floors[color].duplicate()
+var unshaded_floors = {}
+func get_floor(palette, color, unshaded):
+	var lookup = floors
+	if unshaded:
+		lookup = unshaded_floors
+	if color in lookup:
+		return lookup[color].duplicate()
 	var tile = x.instance()
 	var mesh = tile.get_child(0)
 	var j = 0
 	# 0-right, 1-front, 2-left, 3-back, 4-top, 6-bottom
 	for i in [4, 1, 0, 2]:
-		set_color(palette[color+j], mesh, i)
+		if unshaded:
+			set_color(palette[color+j], mesh, i, true)
+		else:
+			set_color(palette[color+j], mesh, i, false)
 		j += 15
-	floors[color] = tile
+	lookup[color] = tile
 	return tile
 
 var tops = {}
@@ -168,7 +181,7 @@ func get_top(palette, color, type):
 		var setcolor = palette[j]
 		if color != 0 and i == 4:
 			setcolor = palette[color]
-		set_color(setcolor, mesh, i)
+		set_color(setcolor, mesh, i, false)
 		j += 1
 	tops[idx] = tile
 	return tile
@@ -188,21 +201,21 @@ func get_tunnel(palette):
 	# 3: top-left (69), 4: left-side (70), 5: left-edge (71)
 	# 0-outside, 1-inside, 2-front
 	var i = 2
-	set_color(palette[68], mesh, i*3+0)
-	set_color(inside, mesh, i*3+1)
-	set_color(front, mesh, i*3+2)
+	set_color(palette[68], mesh, i*3+0, false)
+	set_color(inside, mesh, i*3+1, false)
+	set_color(front, mesh, i*3+2, false)
 	i = 3
-	set_color(palette[69], mesh, i*3+0)
-	set_color(inside, mesh, i*3+1)
-	set_color(front, mesh, i*3+2)
+	set_color(palette[69], mesh, i*3+0, false)
+	set_color(inside, mesh, i*3+1, false)
+	set_color(front, mesh, i*3+2, false)
 	for i in [1, 4]:
-		set_color(palette[70], mesh, i*3+0)
-		set_color(inside, mesh, i*3+1)
-		set_color(front, mesh, i*3+2)
+		set_color(palette[70], mesh, i*3+0, false)
+		set_color(inside, mesh, i*3+1, false)
+		set_color(front, mesh, i*3+2, false)
 	for i in [0, 5]:
-		set_color(palette[71], mesh, i*3+0)
-		set_color(inside, mesh, i*3+1)
-		set_color(front, mesh, i*3+2)
+		set_color(palette[71], mesh, i*3+0, false)
+		set_color(inside, mesh, i*3+1, false)
+		set_color(front, mesh, i*3+2, false)
 
 	tunnel = tile
 	return tile
@@ -219,11 +232,11 @@ func get_half_tunnel(palette, color):
 	var top_color = palette[61]
 	if color != 0:
 		top_color = palette[color]
-	set_color(top_color, mesh, 0)
-	set_color(palette[62], mesh, 1)
-	set_color(palette[63], mesh, 3)
-	set_color(palette[64], mesh, 2)
-	set_color(palette[65], mesh, 5)
+	set_color(top_color, mesh, 0, false)
+	set_color(palette[62], mesh, 1, false)
+	set_color(palette[63], mesh, 3, false)
+	set_color(palette[64], mesh, 2, false)
+	set_color(palette[65], mesh, 5, false)
 	half_tunnel = tile
 	return tile
 
@@ -234,7 +247,7 @@ func _ready():
 		var c = 0
 		for col in row:
 			if "x" in col[0]:
-				var tile = get_floor(level["palette"], col[1])
+				var tile = get_floor(level["palette"], col[1], "t" in col[0])
 				tile.global_translate(Vector3(r, 0, c))
 				add_child(tile)
 			if "t" in col[0]:
