@@ -242,7 +242,7 @@ func get_half_tunnel(palette, color):
 
 func _ready():
 	var r = -5
-	var level = level21
+	var level = level2
 	for row in level["road"]:
 		var c = 0
 		for col in row:
