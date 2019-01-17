@@ -28,6 +28,12 @@ func _physics_process(delta):
 	velocity.y += GRAVITY * delta
 	velocity.z = -(speed * SPEED_MULT * delta)
 	velocity = move_and_slide(velocity, Vector3(0,1,0))
+	var count = get_slide_count()
+	for i in range(count):
+		var collision = get_slide_collision(i)
+		if collision.normal.z > 0.05:
+			queue_free()
+			#get_tree().reload_current_scene()
 
 func _process(delta):
 	var pos = get_global_transform().origin

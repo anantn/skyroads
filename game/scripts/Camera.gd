@@ -1,11 +1,13 @@
 extends Camera
 
 var zdepth = 0
+var lastpos = Vector3()
 
 func diff():
 	var cur = get_global_transform().origin
-	var pos = $"../Ship".get_global_transform().origin
-	return pos.z - cur.z
+	if get_parent().has_node("Ship"):
+		lastpos = $"../Ship".get_global_transform().origin
+	return lastpos.z - cur.z
 
 func _ready():
 	zdepth = diff()
