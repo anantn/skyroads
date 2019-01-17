@@ -162,7 +162,7 @@ func get_floor(palette, color, unshaded):
 			set_color(palette[color+j], mesh, i, false)
 		j += 15
 	lookup[color] = tile
-	return tile
+	return tile.duplicate()
 
 var tops = {}
 func get_top(palette, color, type):
@@ -184,7 +184,7 @@ func get_top(palette, color, type):
 		set_color(setcolor, mesh, i, false)
 		j += 1
 	tops[idx] = tile
-	return tile
+	return tile.duplicate()
 
 var tunnel = null
 func get_tunnel(palette):
@@ -218,7 +218,7 @@ func get_tunnel(palette):
 		set_color(front, mesh, i*3+2, false)
 
 	tunnel = tile
-	return tile
+	return tile.duplicate()
 
 var half_tunnel = null
 func get_half_tunnel(palette, color):
@@ -238,7 +238,7 @@ func get_half_tunnel(palette, color):
 	set_color(palette[64], mesh, 2, false)
 	set_color(palette[65], mesh, 5, false)
 	half_tunnel = tile
-	return tile
+	return tile.duplicate()
 
 func _ready():
 	var r = -5
@@ -248,24 +248,24 @@ func _ready():
 		for col in row:
 			if "x" in col[0]:
 				var tile = get_floor(level["palette"], col[1], "t" in col[0])
-				tile.global_translate(Vector3(r, 0, c))
 				add_child(tile)
+				tile.global_translate(Vector3(r, 0, c))
 			if "t" in col[0]:
 				if "f" in col[0]:
 					var tile = get_half_tunnel(level["palette"], col[2])
-					tile.global_translate(Vector3(r, 0, c))
 					add_child(tile)
+					tile.global_translate(Vector3(r, 0, c))
 					var topfill = get_top(level["palette"], col[2], "h")
-					topfill.global_translate(Vector3(r, 1, c))
 					add_child(topfill)
+					topfill.global_translate(Vector3(r, 1, c))
 				elif "h" in col[0]:
 					var tile = get_half_tunnel(level["palette"], col[2])
-					tile.global_translate(Vector3(r, 0, c))
 					add_child(tile)
+					tile.global_translate(Vector3(r, 0, c))
 				else:
 					var tile = get_tunnel(level["palette"])
-					tile.global_translate(Vector3(r, 0, c))
 					add_child(tile)
+					tile.global_translate(Vector3(r, 0, c))
 			else:
 				var tile
 				if "h" in col[0]:
@@ -273,8 +273,8 @@ func _ready():
 				if "f" in col[0]:
 					tile = get_top(level["palette"], col[2], "f")
 				if tile:
-					tile.global_translate(Vector3(r, 0, c))
 					add_child(tile)
+					tile.global_translate(Vector3(r, 0, c))
 			c = c - 6
 		r = r + 2
 	pass

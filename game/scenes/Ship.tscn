@@ -68,7 +68,7 @@ rings = 8
 radius = 1.0
 height = 1.0
 
-[node name="Ship" type="KinematicBody" index="0"]
+[node name="Ship" type="KinematicBody"]
 
 input_ray_pickable = true
 input_capture_on_drag = false
