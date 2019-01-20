@@ -277,4 +277,6 @@ func _ready():
 					tile.global_translate(Vector3(r, 0, c))
 			c = c - 6
 		r = r + 2
-	pass
+
+func _game_over():
+	get_tree().reload_current_scene()

@@ -6,6 +6,7 @@ const SPEED_MULT = 15
 
 var speed = 0
 var velocity = Vector3()
+var ex = load("res://scenes/Explosion.tscn")
 
 func _physics_process(delta):
 	var direction = Vector3()
@@ -32,10 +33,20 @@ func _physics_process(delta):
 	for i in range(count):
 		var collision = get_slide_collision(i)
 		if collision.normal.z > 0.05:
+			var e = ex.instance()
+			get_parent().add_child(e)
+			e.global_translate(get_global_transform().origin)
+			e.get_child(0).set_emitting(true)
+			e.get_child(1).set_emitting(true)
+			var timer = Timer.new()
+			timer.connect("timeout", $"../Level", "_game_over")
+			timer.set_wait_time(2.5)
+			timer.set_one_shot(true)
+			timer.set_autostart(true)
+			get_parent().add_child(timer)
 			queue_free()
-			#get_tree().reload_current_scene()
 
 func _process(delta):
 	var pos = get_global_transform().origin
 	if pos.y < -20:
-		get_tree().reload_current_scene()
+		$"../Level"._game_over()
