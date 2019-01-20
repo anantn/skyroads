@@ -41,7 +41,7 @@ func _physics_process(delta):
 			e.get_child(2).play()
 			var timer = Timer.new()
 			timer.connect("timeout", $"../Level", "_game_over")
-			timer.set_wait_time(2.5)
+			timer.set_wait_time(3)
 			timer.set_one_shot(true)
 			timer.set_autostart(true)
 			get_parent().add_child(timer)
