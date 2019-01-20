@@ -1,15 +1,11 @@
 extends KinematicBody
 
-const JUMP = 12
+const JUMP = 10
 const GRAVITY = -40
 const SPEED_MULT = 20
 
-const JUMP_NO = 0
-const JUMP_NOW = 1
-const JUMP_BOUNCE = 2
-
 var speed = 0
-var jumping = JUMP_NO
+var jumping = false
 var velocity = Vector3()
 var ex = load("res://scenes/Explosion.tscn")
 
@@ -38,7 +34,7 @@ func _physics_process(delta):
 			$"../Control/ProgressBar".value = speed
 	if Input.is_action_pressed("ui_select") and is_near_floor():
 		velocity.y = JUMP
-		jumping = JUMP_NOW
+		jumping = true
 
 	velocity.x = direction.normalized().x * 5
 	velocity.y += GRAVITY * delta
@@ -62,11 +58,11 @@ func _physics_process(delta):
 			get_parent().add_child(timer)
 			queue_free()
 		if collision.normal.y > 0.05:
-			if jumping == JUMP_NOW:
+			if jumping:
 				velocity.y += JUMP/2
-				jumping = JUMP_BOUNCE
-			elif jumping == JUMP_BOUNCE:
-				jumping = JUMP_NO
+				jumping = false
+		if collision.travel.y > -0.5 and collision.travel.y < -0.01:
+			$"Thud".play()
 
 func _process(delta):
 	var pos = get_global_transform().origin

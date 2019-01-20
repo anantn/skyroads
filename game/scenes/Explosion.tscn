@@ -299,9 +299,9 @@ _sections_unfolded = [ "Draw Passes", "Geometry", "Process Material", "Time", "T
 
 stream = ExtResource( 3 )
 attenuation_model = 0
-unit_db = 0.0
-unit_size = 1.0
-max_db = 3.0
+unit_db = 6.0
+unit_size = 2.0
+max_db = 6.0
 pitch_scale = 1.0
 autoplay = false
 max_distance = 0.0

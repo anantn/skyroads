@@ -4,7 +4,7 @@
 [ext_resource path="res://scenes/Ship.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Level.tscn" type="PackedScene" id=3]
 
-[node name="Spatial" type="Spatial" index="0"]
+[node name="Spatial" type="Spatial"]
 
 [node name="Control" type="Control" parent="." index="0"]
 
@@ -68,7 +68,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Ship" parent="." index="2" instance=ExtResource( 2 )]
 
-transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 1, 1, -15 )
+transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 1, 0, -15 )
 
 [node name="Level" parent="." index="3" instance=ExtResource( 3 )]
 
