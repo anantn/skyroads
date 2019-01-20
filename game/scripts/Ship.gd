@@ -24,14 +24,10 @@ func _physics_process(delta):
 		direction.x += 1
 	if Input.is_action_pressed("ui_up"):
 		if speed < 100:
-			speed += 1
-			_update_thrust(speed)
-			$"../Control/ProgressBar".value = speed
+			_update_speed(speed+1)
 	if Input.is_action_pressed("ui_down"):
 		if speed > 0:
-			speed -= 1
-			_update_thrust(speed)
-			$"../Control/ProgressBar".value = speed
+			_update_speed(speed-1)
 	if Input.is_action_pressed("ui_select") and is_near_floor():
 		velocity.y = JUMP
 		jumping = true
@@ -43,7 +39,11 @@ func _physics_process(delta):
 	var count = get_slide_count()
 	for i in range(count):
 		var collision = get_slide_collision(i)
-		if collision.normal.z > 0.05:
+		if collision.normal.z > 0.1:
+			if speed < 20:
+				_update_speed(0)
+				continue
+			_update_speed(0)
 			var e = ex.instance()
 			get_parent().add_child(e)
 			e.global_translate(get_global_transform().origin)
@@ -69,11 +69,16 @@ func _process(delta):
 	if pos.y < -20:
 		$"../Level"._game_over()
 
-func _update_thrust(speed):
-	if speed == 0:
+func _update_speed(value):
+	speed = value
+	_update_thrust(value)
+	$"../Control/ProgressBar".value = value
+
+func _update_thrust(value):
+	if value == 0:
 		$"Left".set_emitting(false)
 		$"Right".set_emitting(false)
 	else:
 		$"Left".set_emitting(true)
 		$"Right".set_emitting(true)
-		$"Left".process_material.initial_velocity =  speed/100.0
+		$"Left".process_material.initial_velocity =  value/100.0
