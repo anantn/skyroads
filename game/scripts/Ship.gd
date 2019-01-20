@@ -38,6 +38,7 @@ func _physics_process(delta):
 			e.global_translate(get_global_transform().origin)
 			e.get_child(0).set_emitting(true)
 			e.get_child(1).set_emitting(true)
+			e.get_child(2).play()
 			var timer = Timer.new()
 			timer.connect("timeout", $"../Level", "_game_over")
 			timer.set_wait_time(2.5)
