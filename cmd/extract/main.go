@@ -32,10 +32,18 @@ func main() {
 	}
 
 	if levelNum != -1 {
-		if script {
-			fmt.Printf("%s\n", parsed[int(levelNum)].GDScript())
+		if levelNum < 0 && script {
+			fmt.Printf("const LEVELS = [\n")
+			for i := range parsed {
+				fmt.Printf("%s,\n", parsed[i].GDScript())
+			}
+			fmt.Printf("];\n")
 		} else {
-			fmt.Printf("%s\n", parsed[int(levelNum)])
+			if script {
+				fmt.Printf("var level = %s\n", parsed[int(levelNum)].GDScript())
+			} else {
+				fmt.Printf("%s\n", parsed[int(levelNum)])
+			}
 		}
 	} else {
 		for i, l := range parsed {

@@ -48,7 +48,7 @@ func (l Level) String() string {
 // GDScript prints a string that can be imported into a GoDot script.
 func (l Level) GDScript() string {
 	var s strings.Builder
-	fmt.Fprintf(&s, "var level = {\n")
+	fmt.Fprintf(&s, "{\n")
 	fmt.Fprintf(&s, "\tgravity = %d,\n", l.Gravity)
 	fmt.Fprintf(&s, "\tfuel = %d,\n", l.Fuel)
 	fmt.Fprintf(&s, "\toxygen = %d,\n", l.Oxygen)
