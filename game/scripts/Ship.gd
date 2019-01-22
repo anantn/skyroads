@@ -58,8 +58,8 @@ func _physics_process(delta):
 			if jumping:
 				velocity.y += JUMP/2
 				jumping = false
-		if collision.travel.y > -0.5 and collision.travel.y < -0.01:
-			$"Thud".play()
+			if collision.travel.y > -0.5 and collision.travel.y < -0.01:
+				$"Thud".play()
 
 func _process(delta):
 	var pos = get_global_transform().origin
