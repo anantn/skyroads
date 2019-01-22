@@ -40,13 +40,13 @@ func _physics_process(delta):
 	for i in range(count):
 		var collision = get_slide_collision(i)
 		if collision.normal.z > 0.1:
+			if collision.collider.is_in_group("endcap"):
+				_end_game(true)
+				break
 			if speed < 20:
 				_update_speed(0)
 				continue
 			_update_speed(0)
-			if collision.collider.is_in_group("endcap"):
-				_end_game(true)
-				break
 			var e = ex.instance()
 			get_parent().add_child(e)
 			e.global_translate(get_global_transform().origin)
@@ -84,10 +84,14 @@ func _end_game(win):
 	var timer = Timer.new()
 	timer.connect("timeout", $"../Level", "_game_over")
 	if win:
-		timer.set_wait_time(1)
+		timer.set_wait_time(2)
 	else:
 		timer.set_wait_time(3)
 	timer.set_one_shot(true)
 	timer.set_autostart(true)
 	get_parent().add_child(timer)
-	queue_free()
+	if win:
+		hide()
+		global_translate(Vector3(0, 0, -2))
+	else:
+		queue_free()
