@@ -1,0 +1,126 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://assets/music/SkyroadsRoad01B.ogg" type="AudioStream" id=1]
+[ext_resource path="res://assets/music/SkyroadsRoad02B.ogg" type="AudioStream" id=2]
+[ext_resource path="res://assets/music/SkyroadsRoad03B.ogg" type="AudioStream" id=3]
+[ext_resource path="res://assets/music/SkyroadsRoad04B.ogg" type="AudioStream" id=4]
+[ext_resource path="res://assets/music/SkyroadsRoad05B.ogg" type="AudioStream" id=5]
+[ext_resource path="res://assets/music/SkyroadsRoad06B.ogg" type="AudioStream" id=6]
+[ext_resource path="res://assets/music/SkyroadsRoad07B.ogg" type="AudioStream" id=7]
+[ext_resource path="res://assets/music/SkyroadsRoad08B.ogg" type="AudioStream" id=8]
+[ext_resource path="res://assets/music/SkyroadsRoad09B.ogg" type="AudioStream" id=9]
+[ext_resource path="res://assets/music/SkyroadsRoad10B.ogg" type="AudioStream" id=10]
+[ext_resource path="res://assets/music/SkyroadsRoad11B.ogg" type="AudioStream" id=11]
+[ext_resource path="res://assets/music/SkyroadsRoad12B.ogg" type="AudioStream" id=12]
+
+[node name="Node" type="Node" index="0"]
+
+[node name="Road1" type="AudioStreamPlayer" parent="." index="0"]
+
+stream = ExtResource( 1 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Music"
+
+[node name="Road2" type="AudioStreamPlayer" parent="." index="1"]
+
+stream = ExtResource( 2 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Music"
+
+[node name="Road3" type="AudioStreamPlayer" parent="." index="2"]
+
+stream = ExtResource( 3 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Music"
+
+[node name="Road4" type="AudioStreamPlayer" parent="." index="3"]
+
+stream = ExtResource( 4 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Music"
+
+[node name="Road5" type="AudioStreamPlayer" parent="." index="4"]
+
+stream = ExtResource( 5 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Music"
+
+[node name="Road6" type="AudioStreamPlayer" parent="." index="5"]
+
+stream = ExtResource( 6 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Music"
+
+[node name="Road7" type="AudioStreamPlayer" parent="." index="6"]
+
+stream = ExtResource( 7 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Music"
+
+[node name="Road8" type="AudioStreamPlayer" parent="." index="7"]
+
+stream = ExtResource( 8 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Music"
+
+[node name="Road9" type="AudioStreamPlayer" parent="." index="8"]
+
+stream = ExtResource( 9 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Music"
+
+[node name="Road10" type="AudioStreamPlayer" parent="." index="9"]
+
+stream = ExtResource( 10 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Music"
+
+[node name="Road11" type="AudioStreamPlayer" parent="." index="10"]
+
+stream = ExtResource( 11 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Music"
+
+[node name="Road12" type="AudioStreamPlayer" parent="." index="11"]
+
+stream = ExtResource( 12 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Music"
+
+

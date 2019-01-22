@@ -242,6 +242,8 @@ func get_half_tunnel(palette, color):
 	return tile.duplicate()
 
 func _ready():
+	randomize()
+	$"../Music".get_child(randi()%12).play()
 	var r = -5
 	var level = level2
 	for row in level["road"]:
