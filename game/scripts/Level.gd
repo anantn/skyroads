@@ -157,7 +157,7 @@ func get_floor(palette, color, unshaded):
 	var j = 0
 	# 0-right, 1-front, 2-left, 3-back, 4-top, 6-bottom
 	for i in [4, 1, 0, 2]:
-		if unshaded:
+		if unshaded and i == 4:
 			set_color(palette[color+j], mesh, i, true)
 		else:
 			set_color(palette[color+j], mesh, i, false)
@@ -243,7 +243,7 @@ func get_half_tunnel(palette, color):
 
 func _ready():
 	var r = -5
-	var level = level1
+	var level = level2
 	for row in level["road"]:
 		var c = 0
 		var idx = 0
