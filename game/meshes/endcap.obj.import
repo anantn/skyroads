@@ -1,0 +1,17 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/endcap.obj-4792d60d4f437e1288bcccea1448d69e.mesh"
+
+[deps]
+
+files=[ "res://.import/endcap.obj-4792d60d4f437e1288bcccea1448d69e.mesh" ]
+
+source_file="res://meshes/endcap.obj"
+dest_files=[ "res://.import/endcap.obj-4792d60d4f437e1288bcccea1448d69e.mesh", "res://.import/endcap.obj-4792d60d4f437e1288bcccea1448d69e.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )

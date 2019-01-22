@@ -236,7 +236,7 @@ _sections_unfolded = [ "Angle", "Color", "Emission Shape", "Gravity", "Initial V
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
 size = Vector2( 1, 1 )
 
-[node name="Ship" type="KinematicBody" index="0"]
+[node name="Ship" type="KinematicBody"]
 
 input_ray_pickable = true
 input_capture_on_drag = false
