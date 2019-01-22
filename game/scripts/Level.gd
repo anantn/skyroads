@@ -4,6 +4,7 @@ var x = load("res://scenes/Floor.tscn")
 var h = load("res://scenes/Half.tscn")
 var f = load("res://scenes/Full.tscn")
 var t = load("res://scenes/Tunnel.tscn")
+var ec = load("res://scenes/EndCap.tscn")
 var ht = load("res://scenes/TopTunnel.tscn")
 
 var level1 = {
@@ -242,15 +243,20 @@ func get_half_tunnel(palette, color):
 
 func _ready():
 	var r = -5
-	var level = level21
+	var level = level1
 	for row in level["road"]:
 		var c = 0
+		var idx = 0
 		for col in row:
 			if "x" in col[0]:
 				var tile = get_floor(level["palette"], col[1], "t" in col[0])
 				add_child(tile)
 				tile.global_translate(Vector3(r, 0, c))
 			if "t" in col[0]:
+				if idx == len(row)-1:
+					var end = ec.instance()
+					add_child(end)
+					end.global_translate(Vector3(r, 0, c-3))
 				if "f" in col[0]:
 					var tile = get_half_tunnel(level["palette"], col[2])
 					add_child(tile)
@@ -275,8 +281,9 @@ func _ready():
 				if tile:
 					add_child(tile)
 					tile.global_translate(Vector3(r, 0, c))
-			c = c - 6
-		r = r + 2
+			c -= 6
+			idx += 1
+		r += 2
 
 func _game_over():
 	get_tree().reload_current_scene()

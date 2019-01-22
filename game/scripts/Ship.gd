@@ -44,19 +44,16 @@ func _physics_process(delta):
 				_update_speed(0)
 				continue
 			_update_speed(0)
+			if collision.collider.is_in_group("endcap"):
+				_end_game(true)
+				break
 			var e = ex.instance()
 			get_parent().add_child(e)
 			e.global_translate(get_global_transform().origin)
 			e.get_child(0).set_emitting(true)
 			e.get_child(1).set_emitting(true)
 			e.get_child(2).play()
-			var timer = Timer.new()
-			timer.connect("timeout", $"../Level", "_game_over")
-			timer.set_wait_time(3)
-			timer.set_one_shot(true)
-			timer.set_autostart(true)
-			get_parent().add_child(timer)
-			queue_free()
+			_end_game(false)
 		if collision.normal.y > 0.05:
 			if jumping:
 				velocity.y += JUMP/2
@@ -82,3 +79,15 @@ func _update_thrust(value):
 		$"Left".set_emitting(true)
 		$"Right".set_emitting(true)
 		$"Left".process_material.initial_velocity =  value/100.0
+
+func _end_game(win):
+	var timer = Timer.new()
+	timer.connect("timeout", $"../Level", "_game_over")
+	if win:
+		timer.set_wait_time(1)
+	else:
+		timer.set_wait_time(3)
+	timer.set_one_shot(true)
+	timer.set_autostart(true)
+	get_parent().add_child(timer)
+	queue_free()
