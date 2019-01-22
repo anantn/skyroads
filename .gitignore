@@ -1,2 +1,4 @@
 .DS_Store
 models/
+game/assets/music/
+game/.import/*.ogg*

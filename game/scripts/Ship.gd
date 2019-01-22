@@ -18,6 +18,8 @@ func is_near_floor():
 
 func _physics_process(delta):
 	var direction = Vector3()
+	if Input.is_action_pressed("ui_cancel"):
+		get_tree().change_scene("res://scenes/Menu.tscn")
 	if Input.is_action_pressed("ui_left"):
 		direction.x -= 1
 	if Input.is_action_pressed("ui_right"):
@@ -64,7 +66,7 @@ func _physics_process(delta):
 func _process(delta):
 	var pos = get_global_transform().origin
 	if pos.y < -20:
-		$"../Loader"._game_over()
+		$".."._game_over()
 
 func _update_speed(value):
 	speed = value
@@ -82,7 +84,7 @@ func _update_thrust(value):
 
 func _end_game(win):
 	var timer = Timer.new()
-	timer.connect("timeout", $"../Loader", "_game_over")
+	timer.connect("timeout", $"..", "_game_over")
 	timer.set_wait_time(3)
 	timer.set_one_shot(true)
 	timer.set_autostart(true)

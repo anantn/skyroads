@@ -6,7 +6,6 @@ var f = load("res://scenes/Full.tscn")
 var t = load("res://scenes/Tunnel.tscn")
 var ec = load("res://scenes/EndCap.tscn")
 var ht = load("res://scenes/TopTunnel.tscn")
-var lvls = preload("res://scripts/Levels.gd")
 
 var materials = {}
 var unshaded_materials = {}
@@ -126,10 +125,10 @@ func get_half_tunnel(palette, color):
 
 func _ready():
 	randomize()
-	var level = lvls.LEVELS[randi()%len(lvls.LEVELS)]
-	$"../Music".get_child(randi()%$"../Music".get_child_count()).play()
+	$"Music".get_child(randi()%$"Music".get_child_count()).play()
 
 	var r = -5
+	var level = Global.ACTIVE_LEVEL
 	for row in level["road"]:
 		var c = 0
 		var idx = 0
