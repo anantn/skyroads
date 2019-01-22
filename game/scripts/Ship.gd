@@ -64,7 +64,7 @@ func _physics_process(delta):
 func _process(delta):
 	var pos = get_global_transform().origin
 	if pos.y < -20:
-		$"../Level"._game_over()
+		$"../Loader"._game_over()
 
 func _update_speed(value):
 	speed = value
@@ -82,7 +82,7 @@ func _update_thrust(value):
 
 func _end_game(win):
 	var timer = Timer.new()
-	timer.connect("timeout", $"../Level", "_game_over")
+	timer.connect("timeout", $"../Loader", "_game_over")
 	if win:
 		timer.set_wait_time(2)
 	else:
