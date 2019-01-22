@@ -83,10 +83,7 @@ func _update_thrust(value):
 func _end_game(win):
 	var timer = Timer.new()
 	timer.connect("timeout", $"../Loader", "_game_over")
-	if win:
-		timer.set_wait_time(2)
-	else:
-		timer.set_wait_time(3)
+	timer.set_wait_time(3)
 	timer.set_one_shot(true)
 	timer.set_autostart(true)
 	get_parent().add_child(timer)

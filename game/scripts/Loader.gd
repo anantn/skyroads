@@ -141,6 +141,7 @@ func _ready():
 			if "t" in col[0]:
 				if idx == len(row)-1:
 					var end = ec.instance()
+					set_color(level["palette"][66], end.get_child(0), 0, false)
 					add_child(end)
 					end.global_translate(Vector3(r, 0, c-3))
 				if "f" in col[0]:
