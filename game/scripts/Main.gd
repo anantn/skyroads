@@ -7,6 +7,8 @@ var t = load("res://scenes/Tunnel.tscn")
 var ec = load("res://scenes/EndCap.tscn")
 var ht = load("res://scenes/TopTunnel.tscn")
 
+const BURNING = 12
+
 var materials = {}
 var unshaded_materials = {}
 func set_color(color, mesh, index, unshaded):
@@ -39,6 +41,8 @@ func get_floor(palette, color, unshaded):
 	var j = 0
 	# 0-right, 1-front, 2-left, 3-back, 4-top, 6-bottom
 	for i in [4, 1, 0, 2]:
+		if color+j == BURNING:
+			mesh.get_child(0).set_meta("burning", true)
 		if unshaded and i == 4:
 			set_color(palette[color+j], mesh, i, true)
 		else:
@@ -63,6 +67,8 @@ func get_top(palette, color, type):
 	for i in [4, 1, 0, 2]:
 		var setcolor = palette[j]
 		if color != 0 and i == 4:
+			if color == BURNING:
+				mesh.get_child(0).set_meta("burning", true)
 			setcolor = palette[color]
 		set_color(setcolor, mesh, i, false)
 		j += 1
@@ -103,10 +109,10 @@ func get_tunnel(palette):
 	tunnel = tile
 	return tile.duplicate()
 
-var half_tunnel = null
+var half_tunnels = {}
 func get_half_tunnel(palette, color):
-	if half_tunnel:
-		return half_tunnel.duplicate()
+	if color in half_tunnels:
+		return half_tunnels[color].duplicate()
 	var tile = ht.instance()
 	var mesh = tile.get_child(0)
 	var front = palette[66]
@@ -115,12 +121,14 @@ func get_half_tunnel(palette, color):
 	var top_color = palette[61]
 	if color != 0:
 		top_color = palette[color]
+		if color == BURNING:
+			mesh.get_child(0).set_meta("burning", true)
 	set_color(top_color, mesh, 0, false)
 	set_color(palette[62], mesh, 1, false)
 	set_color(palette[63], mesh, 3, false)
 	set_color(palette[64], mesh, 2, false)
 	set_color(palette[65], mesh, 5, false)
-	half_tunnel = tile
+	half_tunnels[color] = tile
 	return tile.duplicate()
 
 func _ready():
@@ -140,6 +148,7 @@ func _ready():
 			if "t" in col[0]:
 				if idx == len(row)-1:
 					var end = ec.instance()
+					end.get_child(0).get_child(0).set_meta("endcap", true)
 					set_color(level["palette"][66], end.get_child(0), 0, false)
 					add_child(end)
 					end.global_translate(Vector3(r, 0, c-3))

@@ -41,22 +41,20 @@ func _physics_process(delta):
 	var count = get_slide_count()
 	for i in range(count):
 		var collision = get_slide_collision(i)
-		if collision.normal.z > 0.1:
-			if collision.collider.is_in_group("endcap"):
+		if collision.collider.has_meta("burning"):
+			_explode()
+			return
+		var normal = collision.normal.normalized()
+		if normal.z > 0.25:
+			if collision.collider.has_meta("endcap"):
 				_end_game(true)
 				break
 			if speed < 20:
 				_update_speed(0)
 				continue
-			_update_speed(0)
-			var e = ex.instance()
-			get_parent().add_child(e)
-			e.global_translate(get_global_transform().origin)
-			e.get_child(0).set_emitting(true)
-			e.get_child(1).set_emitting(true)
-			e.get_child(2).play()
-			_end_game(false)
-		if collision.normal.y > 0.05:
+			_explode()
+			return
+		if normal.y > 0.25:
 			if jumping:
 				velocity.y += JUMP/2
 				jumping = false
@@ -81,6 +79,16 @@ func _update_thrust(value):
 		$"Left".set_emitting(true)
 		$"Right".set_emitting(true)
 		$"Left".process_material.initial_velocity =  value/100.0
+
+func _explode():
+	_update_speed(0)
+	var e = ex.instance()
+	get_parent().add_child(e)
+	e.global_translate(get_global_transform().origin)
+	e.get_child(0).set_emitting(true)
+	e.get_child(1).set_emitting(true)
+	e.get_child(2).play()
+	_end_game(false)
 
 func _end_game(win):
 	var timer = Timer.new()

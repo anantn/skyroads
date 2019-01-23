@@ -76,9 +76,7 @@ skeleton = NodePath("..")
 material/0 = SubResource( 1 )
 _sections_unfolded = [ "Transform", "material" ]
 
-[node name="StaticBody" type="StaticBody" parent="MeshInstance" index="0" groups=[
-"endcap",
-]]
+[node name="StaticBody" type="StaticBody" parent="MeshInstance" index="0"]
 
 input_ray_pickable = true
 input_capture_on_drag = false
