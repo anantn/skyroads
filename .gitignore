@@ -1,4 +1,5 @@
 .DS_Store
-models/
-game/assets/music/
-game/.import/*.ogg*
+workspace/
+godot/export/
+godot/assets/music/
+godot/.import/*.ogg*
