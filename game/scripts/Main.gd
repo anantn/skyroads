@@ -180,5 +180,8 @@ func _ready():
 			idx += 1
 		r += 2
 
-func _game_over():
-	get_tree().reload_current_scene()
+func _game_over(win):
+	if win:
+		get_tree().change_scene("res://scenes/Menu.tscn")
+	else:
+		get_tree().reload_current_scene()

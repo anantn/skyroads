@@ -64,12 +64,12 @@ func _physics_process(delta):
 func _process(delta):
 	var pos = get_global_transform().origin
 	if pos.y < -20:
-		$".."._game_over()
+		$".."._game_over(false)
 
 func _update_speed(value):
 	speed = value
 	_update_thrust(value)
-	$"../Control/ProgressBar".value = value
+	$"../Bottom/ProgressBar".value = value
 
 func _update_thrust(value):
 	if value == 0:
@@ -92,13 +92,11 @@ func _explode():
 
 func _end_game(win):
 	var timer = Timer.new()
-	timer.connect("timeout", $"..", "_game_over")
+	timer.connect("timeout", $"..", "_game_over", [win])
 	timer.set_wait_time(3)
 	timer.set_one_shot(true)
 	timer.set_autostart(true)
 	get_parent().add_child(timer)
 	if win:
-		hide()
-		global_translate(Vector3(0, 0, -2))
-	else:
-		queue_free()
+		$"../Top/Label".text = "Road Complete!"
+	queue_free()
